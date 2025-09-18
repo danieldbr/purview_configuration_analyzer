@@ -50,7 +50,7 @@ jobs:
 
       - name: Run DLP Analysis Script
         run: |
-          .\Invoke-DlpAnalysis -JsonFilePath "pciPolicy.json" -ApiKey ${{ secrets.OPENAIAPIKEY }} -OutputFilePath "dlp_analysis.txt"
+          .\Invoke-DlpAnalysis.ps1 -JsonFilePath "pciPolicy.json" -ApiKey ${{ secrets.OPENAIAPIKEY }} -OutputFilePath "dlp_analysis.txt"
           Get-Content -Path dlp_analysis.txt
 
       - name: Upload dlp_analysis.txt as artifact
