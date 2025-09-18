@@ -1,0 +1,35 @@
+name: Export Data Loss Prevention Configuration
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  export_dlp_configuration:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install ExchangeOnlineManagement
+        run: |
+          Install-Module ExchangeOnlineManagement -Force -AllowClobber -Scope CurrentUser
+          Import-Module ExchangeOnlineManagement
+
+      - name: Run DLP Export Script
+        run: |
+          ./Export-DLPConfiguration.ps1 `
+            -AppId ${{ vars.APPID }} `
+            -CertificatePath "DLPConfigExportAppCertificate.pfx" `
+            -CertificatePassword ${{ secrets.CertificatePassword }} `
+            -Organization ${{ vars.ORGANIZATION }}
+
+      - name: Upload dlpConfiguration.json as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DLP Configuration
+          path: dlpConfiguration.json
