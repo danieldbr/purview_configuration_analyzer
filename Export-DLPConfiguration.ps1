@@ -43,6 +43,6 @@ $dlpConfiguration | ConvertTo-Json -Depth 10 | Out-File "dlpConfiguration.json"
 Write-Output "DLP configuration exported"
 
 # Get PCI policy
-$pciPolicies = Get-DlpCompliancePolicy -DisplayName "PCI Data Security Standard (PCI DSS)"
+$pciPolicies = Get-DlpCompliancePolicy -Identity "PCI Data Security Standard (PCI DSS)"
 $pciPolicies | ConvertTo-Json -Depth 10 | Out-File "pciPolicy.json"
 Write-Output "PCI policy exported"
