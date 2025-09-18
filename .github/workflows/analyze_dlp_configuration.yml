@@ -1,0 +1,60 @@
+name: Analyze Data Loss Prevention Configuration
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  analyze_dlp_configuration:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Restore PFX Certificate
+        run: |
+          $pfxBytes = [System.Convert]::FromBase64String("${{ secrets.CERTIFICATEPFXBASE64 }}")
+          [System.IO.File]::WriteAllBytes("DLPConfigExportAppCertificate.pfx", $pfxBytes)
+
+      - name: Install ExchangeOnlineManagement
+        run: |
+          Install-Module ExchangeOnlineManagement -Force -AllowClobber -Scope CurrentUser
+          Import-Module ExchangeOnlineManagement
+
+      - name: Run DLP Export Script
+        run: |
+          # Convert GitHub secret to SecureString
+          $CertificatePassword = ConvertTo-SecureString ${{ secrets.CERTIFICATEPASSWORD }} -AsPlainText -Force
+
+          ./Export-DLPConfiguration.ps1 `
+            -AppId ${{ vars.APPID }} `
+            -CertificatePath "DLPConfigExportAppCertificate.pfx" `
+            -CertificatePassword $CertificatePassword `
+            -Organization ${{ vars.ORGANIZATION }}
+
+      - name: Upload dlpConfiguration.json as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DLP Configuration
+          path: dlpConfiguration.json
+
+      - name: Upload pciPolicy.json as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PCI Policy
+          path: pciPolicy.json
+
+      - name: Run DLP Analysis Script
+        run: |
+          .\Invoke-DlpAnalysis -JsonFilePath "pciPolicy.json" -ApiKey ${{ secrets.OPENAIAPIKEY }} -OutputFilePath "dlp_analysis.txt"
+          Get-Content -Path dlp_analysis.txt
+
+      - name: Upload dlp_analysis.txt as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DLP Analysis
+          path: dlp_analysis.txt
