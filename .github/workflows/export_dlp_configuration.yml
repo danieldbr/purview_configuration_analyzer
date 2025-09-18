@@ -28,7 +28,7 @@ jobs:
       - name: Run DLP Export Script
         run: |
           # Convert GitHub secret to SecureString
-          $CertificatePassword = ConvertTo-SecureString ${{ secrets.CertificatePassword }} -AsPlainText -Force
+          $CertificatePassword = ConvertTo-SecureString ${{ secrets.CERTIFICATEPASSWORD }} -AsPlainText -Force
 
           ./Export-DLPConfiguration.ps1 `
             -AppId ${{ vars.APPID }} `
