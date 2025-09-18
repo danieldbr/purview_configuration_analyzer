@@ -15,6 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Restore PFX Certificate
+        run: |
+          $pfxBytes = [System.Convert]::FromBase64String("${{ secrets.CERTIFICATEPFXBASE64 }}")
+          [System.IO.File]::WriteAllBytes("DLPConfigExportAppCertificate.pfx", $pfxBytes)
+
       - name: Install ExchangeOnlineManagement
         run: |
           Install-Module ExchangeOnlineManagement -Force -AllowClobber -Scope CurrentUser
