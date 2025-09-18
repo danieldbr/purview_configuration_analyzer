@@ -40,3 +40,5 @@ $dlpConfiguration = @{
 
 # Export the backup to a JSON file
 $dlpConfiguration | ConvertTo-Json -Depth 10 | Out-File "dlpConfiguration.json"
+
+Write-Output "DLP configuration exported"
