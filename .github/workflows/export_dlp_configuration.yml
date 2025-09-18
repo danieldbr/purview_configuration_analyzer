@@ -41,3 +41,9 @@ jobs:
         with:
           name: DLP Configuration
           path: dlpConfiguration.json
+
+      - name: Upload pciPolicy.json as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PCI Policy
+          path: pciPolicy.json
