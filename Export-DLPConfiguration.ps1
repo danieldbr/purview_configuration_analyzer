@@ -6,14 +6,11 @@ param(
     [string]$CertificatePath,
 
     [Parameter(Mandatory=$true)]
-    [string]$CertificatePassword,
+    [securestring]$CertificatePassword,
 
     [Parameter(Mandatory=$true)]
     [string]$Organization
 )
-
-# Convert password to secure string
-$SecureCertPassword = ConvertTo-SecureString -String $CertificatePassword -AsPlainText -Force
 
 # Import ExchangeOnlineManagement module
 Install-Module ExchangeOnlineManagement -Force -AllowClobber -Scope CurrentUser
@@ -23,16 +20,16 @@ Import-Module ExchangeOnlineManagement
 Connect-IPPSSession `
     -AppId $AppId `
     -CertificateFilePath $CertificatePath `
-    -CertificatePassword $SecureCertPassword `
+    -CertificatePassword $CertificatePassword `
     -Organization $Organization
 
 # Verify connection
 Get-ConnectionInformation
 
-# Get DLP Policies
+# Get DLP policies
 $dlpPolicies = Get-DlpCompliancePolicy
 
-# Get DLP Rules
+# Get DLP rules
 $dlpRules = Get-DlpComplianceRule
 
 # Combine policies and rules into a single object
