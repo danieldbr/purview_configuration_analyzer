@@ -13,6 +13,7 @@ This repository provides tools to **export** your [Microsoft Purview](https://le
 - **ChatGPT Integration**  
   Analyze your Purview configuration using ChatGPT to detect issues and get recommendations for best practices.  
 
+
 ## Requirements
 The following requirements are consumed as environment variables and secrets:
 - [App-only authentication for unattended scripts in Exchange Online PowerShell and Security & Compliance PowerShell](https://learn.microsoft.com/en-us/powershell/exchange/app-only-auth-powershell-v2?view=exchange-ps)   
@@ -24,6 +25,7 @@ The following requirements are consumed as environment variables and secrets:
 - `secrets.CERTIFICATEPASSWORD`
 - `secrets.CERTIFICATEPFXBASE64`
 - `secrets.OPENAIAPIKEY`
+
 
 ## Workflows
 ### Export Data Loss Prevention Configuration (`export_dlp_configuration.yml`)
