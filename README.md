@@ -1,10 +1,8 @@
 # Purview Configuration Export & Analysis
-
 This repository provides tools to **export** your [Microsoft Purview](https://learn.microsoft.com/en-us/azure/purview/) configuration and optionally **analyze it with ChatGPT** to identify issues and suggest best practices.  
 
 
 ## Scenarios
-
 - **Automation for Backup**  
   Currently, there is [no automated solution to back up](https://learn.microsoft.com/en-us/purview/data-gov-best-practices-disaster-recovery-migration) or version-control Microsoft Purview configurations.  
   This project was created to fill that gap by providing automated export and backup capabilities.  
@@ -15,9 +13,19 @@ This repository provides tools to **export** your [Microsoft Purview](https://le
 - **ChatGPT Integration**  
   Analyze your Purview configuration using ChatGPT to detect issues and get recommendations for best practices.  
 
+## Requirements
+The following requirements are consumed as environment variables and secrets:
+- [App-only authentication for unattended scripts in Exchange Online PowerShell and Security & Compliance PowerShell](https://learn.microsoft.com/en-us/powershell/exchange/app-only-auth-powershell-v2?view=exchange-ps)   
+- [How to get your ChatGPT API key (4 steps)](https://www.merge.dev/blog/chatgpt-api-key)
+
+### Variables and Secrets
+- `vars.APPID`
+- `vars.ORGANIZATION`
+- `secrets.CERTIFICATEPASSWORD`
+- `secrets.CERTIFICATEPFXBASE64`
+- `secrets.OPENAIAPIKEY`
 
 ## Workflows
-
 ### Export Data Loss Prevention Configuration (`export_dlp_configuration.yml`)
 Runs `Export-DlpConfiguration.ps1` to authenticate to Microsoft Purview (Security & Compliance) using certificate-based service principal authentication, export all DLP policies, DLP rules, and PCI policy settings, and save them into `dlpConfiguration.json`, which is then published as an artifact via `actions/upload-artifact`.
 
