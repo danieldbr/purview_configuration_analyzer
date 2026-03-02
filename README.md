@@ -1,5 +1,6 @@
-# Purview Configuration Export & Analysis
-This repository provides tools to **export** your [Microsoft Purview](https://learn.microsoft.com/en-us/azure/purview/) configuration and optionally **analyze it with ChatGPT** to identify issues and suggest best practices.  
+# Purview Configuration Export & Analysis with ChatGPT
+This repository provides GitHub Actions workflows to **export** your Microsoft Purview configuration and optionally **analyze it with ChatGPT** to identify issues and suggest best practices.  
+Both the exported configuration (`dlpConfiguration.json`) and the ChatGPT analysis (`dlp_analysis.txt`) are published as artifacts via the `upload-artifact` action.
 
 
 ## Scenarios
@@ -29,7 +30,7 @@ The following requirements are consumed as environment variables and secrets:
 
 ## Workflows
 ### Export Data Loss Prevention Configuration (`export_dlp_configuration.yml`)
-Runs `Export-DlpConfiguration.ps1` to authenticate to Microsoft Purview (Security & Compliance) using certificate-based service principal authentication, export all DLP policies, DLP rules, and PCI policy settings, and save them into `dlpConfiguration.json`, which is then published as an artifact via `actions/upload-artifact`.
+Runs `Export-DlpConfiguration.ps1` to authenticate to Microsoft Purview (Security & Compliance) using certificate-based service principal authentication, export all DLP policies, DLP rules, and PCI policy settings, and save them into `dlpConfiguration.json`.
 
 ### Analyze Data Loss Prevention Configuration (`analyze_dlp_configuration.yml`)
 Performs the same export process as above, then runs `Invoke-DlpAnalysis.ps1` to send the exported configuration to a ChatGPT prompt acting as a Purview Administrator, returning detailed analysis, best‑practice recommendations, and identification of potential misconfigurations.
